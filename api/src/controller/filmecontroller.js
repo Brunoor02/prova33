@@ -1,4 +1,4 @@
-import {alterarImagem,  inserirFilme } from '../repository/filmeRepository.js' 
+import {alterarImagem,  inserirFilme, listarTodosFilme } from '../repository/filmeRepository.js' 
 
 import multer from 'multer'
 import { Router } from 'express'
@@ -43,7 +43,7 @@ server.post('/filme', async  (req, resp) =>  {
     }
 })
 
-server.put('/filme/:id/imagem', upload.single('capa') , async (req, resp) =>{
+server.put('/filme/:id/capa', upload.single('capa') , async (req, resp) =>{
     try {
         const { id } = req.params;
         const imagem = req.file.path;
@@ -58,6 +58,18 @@ server.put('/filme/:id/imagem', upload.single('capa') , async (req, resp) =>{
         resp.status(400).send({
             erro: err.message
         })
+    }
+})
+
+server.get('/filme', async (req, resp) => {
+    try {
+        const resposta = await listarTodosFilme( );
+        resp.send(resposta);
+    } catch (err) {
+        resp.status(400).send({
+            erro: err.message
+        })
+        
     }
 })
 
